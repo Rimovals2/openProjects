@@ -1,0 +1,84 @@
+#
+# Project: MaxLevel Cmangos 
+# Author: Slavomir Strnad
+# GitHub: https://github.com/Rimovals2
+# Description:
+#   - Core logic for event management, including event activation,
+#     notifications, boss management, and expiration handling.
+# License: GNU General Public License v3.0
+#   - You must retain this header when modifying or redistributing the code.
+#   - See LICENSE file for more details.
+# 
+
+From c1fe08cff58c66de96206dc123f6e70bcbf5554e Mon Sep 17 00:00:00 2001
+From: Rimovals <Rimovals.s@seznam.cz>
+Date: Sat, 9 Aug 2014 22:03:31 +0200
+Subject: [PATCH] Command BuffAll Players
+
+---
+ src/game/Chat.cpp | 32 ++++++++++++++++++++++++++++++++
+ src/game/Chat.h   |  1 +
+ 2 files changed, 33 insertions(+)
+
+diff --git a/src/game/Chat.cpp b/src/game/Chat.cpp
+index 693e68b..bd74153 100644
+--- a/src/game/Chat.cpp
++++ b/src/game/Chat.cpp
+@@ -356,6 +356,7 @@ ChatCommand * ChatHandler::getCommandTable()
+         { "gameobject_template",         SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadGameobjectTemplateCommand,     "", NULL },
+         { "item_template",               SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadItemTemplateCommand,    "", NULL },
+         { "creature_template",           SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadCreatureTemplateCommand,    "", NULL },
++		 {"buffall",         SEC_ADMINISTRATOR,         false, &ChatHandler::HandleAuraEvent,              "", NULL }, // BUFF ALL PLAYERS 
+         // Konec
+ 
+         { "",                            SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadCommand,                        "", NULL },
+@@ -1932,3 +1933,34 @@ bool ChatHandler::GetPlayerGroupAndGUIDByName(const char* cname, Player* &plr, G
+     return true;
+ }
+ 
++bool ChatHandler::HandleAuraEvent(const char* args) // BUFF ALL PLAYERS SCRIPT MasterWoW Server
++{
++    if (!*args)
++        return false;
++
++    int32 spellId;
++    bool add = true;
++    spellId = atoi(args);
++
++    if (!spellId)
++        return false;
++
++    if (spellId < 0)
++    {
++        add = false;
++        spellId = -spellId;
++    }
++
++    HashMapHolder<Player>::MapType map = ObjectAccessor::Instance().GetPlayers();
++    for(HashMapHolder<Player>::MapType::iterator it = map.begin(); it != map.end(); it++)
++    {
++        if (!it->second->IsInWorld())
++            continue;
++
++        if (add)
++            it->second->CastSpell(it->second, spellId, true);
++        else
++            it->second->RemoveAurasDueToSpell(spellId);
++    }
++    return true;
++}
+\ No newline at end of file
+diff --git a/src/game/Chat.h b/src/game/Chat.h
+index 75c14ea..befc69c 100644
+--- a/src/game/Chat.h
++++ b/src/game/Chat.h
+@@ -310,6 +310,7 @@ class ChatHandler
+         bool HandleReloadGameobjectTemplateCommand(const char* args);
+         bool HandleReloadItemTemplateCommand(const char* args);
+         bool HandleReloadCreatureTemplateCommand(const char* args);
++		bool HandleAuraEvent(const char* args); // BuffAll Players
+         // Konec
+ 		
+         bool HandleInstanceListBindsCommand(const char* args);
+-- 
+2.7.4.1.g5468f9e

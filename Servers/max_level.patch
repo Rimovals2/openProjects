@@ -1,0 +1,63 @@
+#
+# Project: MaxLevel Cmangos 
+# Author: Slavomir Strnad
+# GitHub: https://github.com/Rimovals2
+# Description:
+#   - Core logic for event management, including event activation,
+#     notifications, boss management, and expiration handling.
+# License: GNU General Public License v3.0
+#   - You must retain this header when modifying or redistributing the code.
+#   - See LICENSE file for more details.
+# 
+
+
+From fed428b2b65fe54305a6dcf0da379bca1c5b9d06 Mon Sep 17 00:00:00 2001
+From: Rimovals <Rimovals.s@seznam.cz>
+Date: Sun, 25 Sep 2022 08:21:03 +0200
+Subject: [PATCH] Max_LEVEL
+
+---
+ src/game/Globals/SharedDefines.h | 6 +++---
+ src/game/Server/DBCEnums.h       | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/game/Globals/SharedDefines.h b/src/game/Globals/SharedDefines.h
+index c41dbf5..18799f1 100644
+--- a/src/game/Globals/SharedDefines.h
++++ b/src/game/Globals/SharedDefines.h
+@@ -2077,14 +2077,14 @@ enum Expansions
+ // Maxlevel for expansion
+ enum MaxLevel
+ {
+-    MAX_LEVEL_CLASSIC                   = 60,
+-    MAX_LEVEL_TBC                       = 70,
++    MAX_LEVEL_CLASSIC                   = 255,
++    MAX_LEVEL_TBC                       = 255,
+ };
+ 
+ static const MaxLevel maxLevelForExpansion[MAX_EXPANSION + 1] = { MAX_LEVEL_CLASSIC, MAX_LEVEL_TBC };
+ 
+ // Max creature level (included some bosses and elite)
+-#define DEFAULT_MAX_CREATURE_LEVEL 75
++#define DEFAULT_MAX_CREATURE_LEVEL 255
+ 
+ enum TeleportLocation
+ {
+diff --git a/src/game/Server/DBCEnums.h b/src/game/Server/DBCEnums.h
+index 338482d..5ff07d9 100644
+--- a/src/game/Server/DBCEnums.h
++++ b/src/game/Server/DBCEnums.h
+@@ -22,11 +22,11 @@
+ // Client expected level limitation, like as used in DBC item max levels for "until max player level"
+ // use as default max player level, must be fit max level for used client
+ // also see MAX_LEVEL and STRONG_MAX_LEVEL define
+-#define DEFAULT_MAX_LEVEL 70
++#define DEFAULT_MAX_LEVEL 255
+ 
+ // client supported max level for player/pets/etc. Avoid overflow or client stability affected.
+ // also see GT_MAX_LEVEL define
+-#define MAX_LEVEL    100
++#define MAX_LEVEL    255
+ 
+ // Server side limitation. Base at used code requirements.
+ // also see MAX_LEVEL and GT_MAX_LEVEL define
