@@ -2,3 +2,7 @@
 	path = AzerothCore/modules/mod-anticheat
 	url = https://github.com/azerothcore/mod-anticheat.git
 	branch = master
+[submodule "AzerothCore/azerothcore-wotlk/modules/mod-anticheat"]
+	path = AzerothCore/azerothcore-wotlk/modules/mod-anticheat
+	url = https://github.com/azerothcore/mod-anticheat.git
+	branch = master
